@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulRoom - A Private Universe for Two</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="screen active">
+        <div class="welcome-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <h1>SoulRoom</h1>
+            </div>
+            <p class="tagline">A Private Universe for Two</p>
+            <div class="welcome-content">
+                <p>Create a secure digital sanctuary where you and someone special can connect, share, and grow together.</p>
+                <div class="feature-highlights">
+                    <div class="feature">
+                        <i class="fas fa-lock"></i>
+                        <span>Secure & Private</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-users"></i>
+                        <span>Two People Only</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-seedling"></i>
+                        <span>Grow Together</span>
+                    </div>
+                </div>
+                <button class="btn primary" onclick="showSetup()">Create Your Room</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Setup Screen -->
+    <div id="setupScreen" class="screen">
+        <div class="setup-container">
+            <h2>Setup Your SoulRoom</h2>
+            <div class="setup-form">
+                <div class="input-group">
+                    <label>Your Name</label>
+                    <input type="text" id="userName" placeholder="How should you be known?">
+                </div>
+                <div class="input-group">
+                    <label>Room Name</label>
+                    <input type="text" id="roomName" placeholder="Give your shared space a name">
+                </div>
+                <div class="input-group">
+                    <label>Choose Your Avatar</label>
+                    <div class="avatar-selection">
+                        <div class="avatar" data-avatar="🌟" onclick="selectAvatar('🌟')">🌟</div>
+                        <div class="avatar" data-avatar="🌙" onclick="selectAvatar('🌙')">🌙</div>
+                        <div class="avatar" data-avatar="🌸" onclick="selectAvatar('🌸')">🌸</div>
+                        <div class="avatar" data-avatar="🦋" onclick="selectAvatar('🦋')">🦋</div>
+                        <div class="avatar" data-avatar="🌊" onclick="selectAvatar('🌊')">🌊</div>
+                        <div class="avatar" data-avatar="🔥" onclick="selectAvatar('🔥')">🔥</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Current Mood</label>
+                    <div class="mood-selection">
+                        <div class="mood" data-mood="happy" onclick="selectMood('happy')">😊</div>
+                        <div class="mood" data-mood="calm" onclick="selectMood('calm')">😌</div>
+                        <div class="mood" data-mood="excited" onclick="selectMood('excited')">🤗</div>
+                        <div class="mood" data-mood="thoughtful" onclick="selectMood('thoughtful')">🤔</div>
+                        <div class="mood" data-mood="loving" onclick="selectMood('loving')">🥰</div>
+                        <div class="mood" data-mood="peaceful" onclick="selectMood('peaceful')">☮️</div>
+                    </div>
+                </div>
+                <button class="btn primary" onclick="generateRoomCode()">Generate Room Link</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Waiting Room Screen -->
+    <div id="waitingScreen" class="screen">
+        <div class="waiting-container">
+            <div class="waiting-content">
+                <h2>Waiting for Your Soul Partner...</h2>
+                <div class="connection-visual">
+                    <div class="pulse-ring"></div>
+                    <div class="you-dot">You</div>
+                </div>
+                <div class="room-link-section">
+                    <p>Share this link with your partner:</p>
+                    <div class="link-container">
+                        <input type="text" id="roomLink" readonly>
+                        <button onclick="copyLink()" class="copy-btn">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="waiting-message">
+                    <p>🔐 Both of you must be present to enter the room</p>
+                    <p>✨ Your shared universe awaits...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Room Screen -->
+    <div id="roomScreen" class="screen">
+        <div class="room-container">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="room-info">
+                    <h3 id="roomTitle">Soul Connection</h3>
+                    <div class="participants">
+                        <span class="participant" id="participant1">
+                            <span class="avatar" id="avatar1">🌟</span>
+                            <span class="name" id="name1">You</span>
+                        </span>
+                        <span class="connection-heart">💕</span>
+                        <span class="participant" id="participant2">
+                            <span class="avatar" id="avatar2">🌙</span>
+                            <span class="name" id="name2">Partner</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="room-controls">
+                    <button class="control-btn" onclick="toggleMood()" title="Change Mood">
+                        <i class="fas fa-palette"></i>
+                    </button>
+                    <button class="control-btn" onclick="leaveRoom()" title="Leave Room">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Sidebar Navigation -->
+                <div class="sidebar">
+                    <div class="nav-item active" data-tab="chat" onclick="switchTab('chat')">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat</span>
+                    </div>
+                    <div class="nav-item" data-tab="games" onclick="switchTab('games')">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Games</span>
+                    </div>
+                    <div class="nav-item" data-tab="media" onclick="switchTab('media')">
+                        <i class="fas fa-play"></i>
+                        <span>Media</span>
+                    </div>
+                    <div class="nav-item" data-tab="rituals" onclick="switchTab('rituals')">
+                        <i class="fas fa-seedling"></i>
+                        <span>Rituals</span>
+                    </div>
+                    <div class="nav-item" data-tab="thoughts" onclick="switchTab('thoughts')">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Thoughts</span>
+                    </div>
+                </div>
+
+                <!-- Content Panels -->
+                <div class="content-area">
+                    <!-- Chat Panel -->
+                    <div id="chatPanel" class="panel active">
+                        <div class="chat-container">
+                            <div class="chat-messages" id="chatMessages">
+                                <div class="welcome-message">
+                                    <p>🌟 Welcome to your private universe! 🌟</p>
+                                </div>
+                            </div>
+                            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                                <span>Partner is typing</span>
+                                <div class="typing-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="chat-input-container">
+                                <input type="text" id="chatInput" placeholder="Share your thoughts..." onkeypress="handleChatKeypress(event)">
+                                <button onclick="sendMessage()" class="send-btn">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Games Panel -->
+                    <div id="gamesPanel" class="panel">
+                        <div class="games-container">
+                            <h3>Mini Games</h3>
+                            <div class="game-grid">
+                                <div class="game-card" onclick="startGame('tictactoe')">
+                                    <i class="fas fa-th"></i>
+                                    <h4>Tic Tac Toe</h4>
+                                    <p>Classic strategy game</p>
+                                </div>
+                                <div class="game-card" onclick="startGame('drawing')">
+                                    <i class="fas fa-paint-brush"></i>
+                                    <h4>Draw Together</h4>
+                                    <p>Create art together</p>
+                                </div>
+                                <div class="game-card" onclick="startGame('wordgame')">
+                                    <i class="fas fa-font"></i>
+                                    <h4>Word Duel</h4>
+                                    <p>Battle of words</p>
+                                </div>
+                                <div class="game-card" onclick="startGame('memory')">
+                                    <i class="fas fa-brain"></i>
+                                    <h4>Memory Match</h4>
+                                    <p>Test your memory</p>
+                                </div>
+                            </div>
+                            <div id="gameArea" class="game-area" style="display: none;">
+                                <!-- Game content will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Media Panel -->
+                    <div id="mediaPanel" class="panel">
+                        <div class="media-container">
+                            <h3>Watch & Listen Together</h3>
+                            <div class="media-options">
+                                <div class="media-section">
+                                    <h4><i class="fas fa-video"></i> Video</h4>
+                                    <input type="url" id="videoUrl" placeholder="Paste YouTube URL...">
+                                    <button onclick="loadVideo()" class="btn secondary">Load Video</button>
+                                </div>
+                                <div class="media-section">
+                                    <h4><i class="fas fa-music"></i> Music</h4>
+                                    <input type="url" id="musicUrl" placeholder="Paste Spotify/YouTube Music URL...">
+                                    <button onclick="loadMusic()" class="btn secondary">Play Music</button>
+                                </div>
+                            </div>
+                            <div id="mediaPlayer" class="media-player">
+                                <!-- Media content will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rituals Panel -->
+                    <div id="ritualsPanel" class="panel">
+                        <div class="rituals-container">
+                            <h3>Emotional Rituals</h3>
+                            <div class="ritual-grid">
+                                <!-- Shared Plant -->
+                                <div class="ritual-card">
+                                    <div class="plant-ritual">
+                                        <h4><i class="fas fa-seedling"></i> Our Plant</h4>
+                                        <div class="plant-container">
+                                            <div class="plant" id="sharedPlant">
+                                                <div class="stem"></div>
+                                                <div class="leaves leaf1"></div>
+                                                <div class="leaves leaf2"></div>
+                                                <div class="leaves leaf3"></div>
+                                            </div>
+                                        </div>
+                                        <p class="plant-status" id="plantStatus">Your plant looks healthy! 🌱</p>
+                                        <button onclick="waterPlant()" class="btn ritual-btn">Water Plant 💧</button>
+                                    </div>
+                                </div>
+
+                                <!-- Digital Candle -->
+                                <div class="ritual-card">
+                                    <div class="candle-ritual">
+                                        <h4><i class="fas fa-fire"></i> Sacred Candle</h4>
+                                        <div class="candle-container">
+                                            <div class="candle" id="sacredCandle">
+                                                <div class="flame" id="candleFlame" style="display: none;"></div>
+                                                <div class="wick"></div>
+                                                <div class="wax"></div>
+                                            </div>
+                                        </div>
+                                        <div class="candle-controls">
+                                            <button onclick="lightCandle()" class="btn ritual-btn" id="lightBtn">Light Together 🕯️</button>
+                                            <button onclick="blowCandle()" class="btn ritual-btn" id="blowBtn" style="display: none;">Blow Out 💨</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thought Exchange Panel -->
+                    <div id="thoughtsPanel" class="panel">
+                        <div class="thoughts-container">
+                            <h3>Anonymous Thought Exchange</h3>
+                            <div class="thoughts-explanation">
+                                <p>Share your deepest thoughts anonymously. Can you guess who said what?</p>
+                            </div>
+                            <div class="thought-input-section">
+                                <textarea id="thoughtInput" placeholder="Share an anonymous thought or feeling..."></textarea>
+                                <button onclick="submitThought()" class="btn primary">Drop Thought 💭</button>
+                            </div>
+                            <div class="thoughts-display" id="thoughtsDisplay">
+                                <div class="no-thoughts">
+                                    <p>No thoughts shared yet. Be the first to open your soul...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeGameModal()">&times;</span>
+            <div id="modalGameContent">
+                <!-- Game content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
